@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Luxe Shine</title>
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Register</h2>
+
+    <!-- Step 1: Send Verification Code -->
+    <div id="step1" class="auth-step">
+      <form id="sendCodeForm">
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Send Verification Code</button>
+      </form>
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+
+    <!-- Step 2: Verify Code -->
+    <div id="step2" class="auth-step" style="display: none;">
+      <p id="verifyMessage" style="text-align: center; color: #0d6efd; margin-bottom: 15px;"></p>
+      <form id="verifyForm">
+        <input type="text" id="verificationCode" placeholder="Enter 6-digit code" maxlength="6" required>
+        <button type="submit">Verify & Register</button>
+      </form>
+      <button type="button" id="backBtn" style="margin-top: 10px; width: 100%; padding: 10px; background: #ddd; border: none; border-radius: 5px; cursor: pointer;">
+        Back
+      </button>
+    </div>
+
+    <div id="message" style="margin-top: 15px; text-align: center; padding: 10px; display: none;"></div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

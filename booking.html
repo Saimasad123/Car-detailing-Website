@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Now - Luxe Shine</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="lux.png" alt="Luxe Shine" class="logo-img">
+      <span>Luxe Shine</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Now</a>
+      <a href="history.html">History</a>
+      <a href="admin.html">Admin</a>
+      <a href="javascript:void(0);" onclick="logout(); return false;">Logout</a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Book Your Service</h1>
+    <p>Fill out the form below to schedule your car detailing service.</p>
+  </header>
+
+  <!-- BOOKING FORM -->
+  <div class="booking">
+    <form id="bookingForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required readonly>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <input type="text" id="address" placeholder="Street Address" required>
+      <input type="text" id="city" placeholder="City" required>
+      <input type="text" id="zipcode" placeholder="ZIP Code" required>
+
+      <!-- Updated Service Dropdown -->
+      <select id="service" required>
+        <option value="">-- Select a service --</option>
+        <option value="Exterior Wash">Exterior Wash</option>
+        <option value="Interior Cleaning">Interior Cleaning</option>
+        <option value="Full Detail">Full Detail</option>
+      </select>
+
+      <label for="paymentMethod">Payment Method</label>
+      <select id="paymentMethod" required>
+        <option value="cash">Cash on Service</option>
+        <option value="stripe">Pay with Card (Stripe)</option>
+      </select>
+
+      <div style="margin-top:8px;">
+        <strong>Price:</strong> <span id="servicePrice">Select a service</span>
+      </div>
+
+      <input type="date" id="date" required>
+      <input type="time" id="time" required>
+      <button type="submit" class="btn-primary">Confirm Booking</button>
+    </form>
+    <div class="result" id="bookingResult"></div>
+  </div>
+
+  <!-- AI Chatbot Floating Button -->
+  <div class="ai-chat-btn" id="aiChatBtn">
+    <span>💬</span>
+  </div>
+
+  <!-- AI Chatbot Window -->
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">🤖 Luxe Shine Assistant</div>
+    <div class="ai-chat-body" id="aiChatBody"></div>
+    <div class="ai-chat-input">
+      <input type="text" id="aiChatInput" placeholder="Ask me anything..." />
+      <button onclick="sendAIMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Luxe Shine. All Rights Reserved.</p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
+  </script>
+  <script src="js/booking.js"></script>
+  <script src="js/chatbot.js"></script>
+
+</body>
+</html>

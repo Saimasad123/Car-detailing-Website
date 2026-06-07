@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Payment Success</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div style="max-width:600px;margin:40px auto;text-align:center;">
+    <h1>Processing Payment...</h1>
+    <p id="status">Please wait while we confirm your booking.</p>
+  </div>
+
+  <script>
+    async function complete() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      if (!sessionId) {
+        document.getElementById('status').textContent = 'Missing session id.';
+        return;
+      }
+      try {
+        const res = await fetch('http://localhost:5000/api/bookings/payments/complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('status').textContent = 'Payment confirmed! Booking ID: ' + data.booking.bookingId + '. A confirmation email was sent.';
+          setTimeout(() => window.location.href = 'history.html', 4000);
+        } else {
+          document.getElementById('status').textContent = 'Error confirming payment: ' + (data.msg || 'Unknown');
+        }
+      } catch (err) {
+        document.getElementById('status').textContent = 'Network error while confirming payment.';
+      }
+    }
+    complete();
+  </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking History - Luxe Shine</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .history-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .booking-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 5px solid #0d6efd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .booking-card h3 {
+      color: #0d6efd;
+      margin-bottom: 10px;
+    }
+    .booking-card p {
+      margin: 8px 0;
+      padding: 5px 0;
+    }
+    .booking-card b {
+      color: #0d6efd;
+      min-width: 100px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="lux.png" alt="Luxe Shine" class="logo-img">
+      <span>Luxe Shine</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Now</a>
+      <a href="history.html">History</a>
+      <a href="admin.html">Admin</a>
+      <a href="javascript:void(0);" onclick="logout(); return false;">Logout</a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Your Booking History</h1>
+    <p>View all your service bookings</p>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="history-container">
+    <div id="historyContent">
+      <p style="text-align: center; color: #666;">Loading bookings...</p>
+    </div>
+  </div>
+
+  <!-- AI Chatbot Floating Button -->
+  <div class="ai-chat-btn" id="aiChatBtn">
+    <span>💬</span>
+  </div>
+
+  <!-- AI Chatbot Window -->
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">🤖 Luxe Shine Assistant</div>
+    <div class="ai-chat-body" id="aiChatBody"></div>
+    <div class="ai-chat-input">
+      <input type="text" id="aiChatInput" placeholder="Ask me anything..." />
+      <button onclick="sendAIMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Luxe Shine. All Rights Reserved.</p>
+  </footer>
+
+  <script src="js/chatbot.js"></script>
+
+  <script>
+    // Check auth
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      window.location.href = 'login.html';
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
+
+    // Load history
+    const container = document.getElementById('historyContent');
+
+    fetch('/api/bookings/history')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Bookings loaded:', data);
+
+        if (!data.bookings || data.bookings.length === 0) {
+          container.innerHTML = '<p>No bookings found.</p>';
+          return;
+        }
+
+        // Filter by user email
+        const userEmail = (user.email || '').toLowerCase();
+        const myBookings = data.bookings.filter(b => 
+          (b.email || '').toLowerCase() === userEmail
+        );
+
+        if (myBookings.length === 0) {
+          container.innerHTML = `<p>No bookings for ${user.email}</p>`;
+          return;
+        }
+
+        // Display bookings
+        container.innerHTML = myBookings.map(b => `
+          <div class="booking-card">
+            <h3>${b.service || 'Service'}</h3>
+            <p><b>Booking ID:</b> ${b.bookingId || 'N/A'}</p>
+            <p><b>Name:</b> ${b.name || 'N/A'}</p>
+            <p><b>Email:</b> ${b.email || 'N/A'}</p>
+            <p><b>Phone:</b> ${b.phone || 'N/A'}</p>
+            <p><b>Address:</b> ${b.address || 'N/A'}</p>
+            <p><b>City:</b> ${b.city || 'N/A'}</p>
+            <p><b>ZIP:</b> ${b.zipcode || 'N/A'}</p>
+            <p><b>Date:</b> ${b.date || 'N/A'}</p>
+            <p><b>Time:</b> ${b.time || 'N/A'}</p>
+          </div>
+        `).join('');
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        container.innerHTML = `<p style="color: red;">Error loading bookings: ${err.message}</p>`;
+      });
+  </script>
+</body>
+</html>

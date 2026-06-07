@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxe Shine - Home</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Auth Guard -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        window.location.replace('./login.html');
+      }
+    });
+  </script>
+</head>
+
+<body>
+    
+  <!-- Navbar -->
+  <nav class="navbar">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="lux.png" alt="Luxe Shine Logo" class="logo-img">
+      <span>Luxe Shine</span>
+    </div>
+
+    <!-- Navigation links -->
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Now</a>
+      <a href="history.html">History</a>
+      <a href="admin.html">Admin</a>
+      <a href="javascript:void(0);" onclick="logout(); return false;">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="header">
+    <h1>Welcome, <span id="userName"></span> 👋</h1>
+    <p>Professional Car Detailing Services. Make your car shine like new.</p>
+    <a href="booking.html" class="btn-primary">Book Your Service</a>
+  </header>
+
+  <!-- Services Section -->
+  <section class="services">
+    <div class="service-card">
+      <h3>Exterior Wash</h3>
+      <p class="price">$30</p>
+      <p>High-quality exterior cleaning to restore your car’s shine.</p>
+      <button class="book-btn" data-service="Exterior Wash">Book Now</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Interior Cleaning</h3>
+      <p class="price">$50</p>
+      <p>Deep cleaning for interiors, carpets, and seats.</p>
+      <button class="book-btn" data-service="Interior Cleaning">Book Now</button>
+    </div>
+
+    <div class="service-card">
+      <h3>Full Detail</h3>
+      <p class="price">$90</p>
+      <p>Complete interior and exterior detailing for ultimate shine.</p>
+      <button class="book-btn" data-service="Full Detail">Book Now</button>
+    </div>
+  </section>
+
+  <!-- AI Chatbot Floating Button -->
+  <div class="ai-chat-btn" id="aiChatBtn">
+    <span>💬</span>
+  </div>
+
+  <!-- AI Chatbot Window -->
+  <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">🤖 Luxe Shine Assistant</div>
+    <div class="ai-chat-body" id="aiChatBody"></div>
+    <div class="ai-chat-input">
+      <input type="text" id="aiChatInput" placeholder="Ask me anything..." />
+      <button onclick="sendAIMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Luxe Shine. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/chatbot.js"></script>
+  <script>
+    // Show user name
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      document.getElementById('userName').textContent = user.name || 'User';
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.replace('./login.html');
+    }
+
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Book buttons
+      const bookButtons = document.querySelectorAll('.book-btn');
+      if (bookButtons.length > 0) {
+        console.log('Found', bookButtons.length, 'book buttons');
+        bookButtons.forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const service = this.getAttribute('data-service');
+            console.log('Book button clicked! Service:', service);
+            localStorage.setItem('selectedService', service);
+            console.log('Redirecting to booking.html');
+            window.location.href = 'booking.html';
+          });
+        });
+      } else {
+        console.log('No book buttons found!');
+      }
+    });
+  </script>
+
+</body>
+</html>
