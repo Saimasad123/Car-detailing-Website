@@ -14,7 +14,7 @@ A full-stack car detailing service booking platform built with HTML, CSS, JavaSc
 * Responsive and Modern UI/UX
 * RESTful API Architecture
 * JSON-Based Data Persistence
-
+. Ai chatbot for booking details and queries
 ### Workflow
 
 1. User registers an account.
